@@ -11,11 +11,19 @@ public class WikiScraper {
 	}
 
 	public static void scrapeTopic(String url) {
-		String html = getUrl("http://www.wikipedia.org" + url);
-		System.out.println(html);
-		Document doc = Jsoup.parse(html);
-		String contentText = doc.select("#mw-content-text > p").first().text();
-		System.out.println(contentText);
+		
+		Document doc;
+		try {
+			doc = Jsoup.connect("https://en.wikipedia.org" + url).get();
+			String title = doc.title();
+			System.out.println(title);
+			String contentText = doc.select("#mw-content-text > p").first().text();
+			System.out.println(contentText);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public static String getUrl(String url) {
